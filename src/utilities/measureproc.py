@@ -63,7 +63,7 @@ def summarise_results(results):
         minimum = min(data)
         percentile_25 = stats.scoreatpercentile(data, 25)
         median = stats.scoreatpercentile(data, 50)
-        percentile_75 = stats.scoreatpercentile(data, 25)
+        percentile_75 = stats.scoreatpercentile(data, 75)
         maximum = max(data)
         format_string = "%.2f"
         table_data.append(Row(metric = metric,

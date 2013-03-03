@@ -18,6 +18,7 @@ log_filepath = os.path.join(parent_dir, "utilities", "example.log.bz2")
 re_log_line = re.compile("(.*?),(.*?),(.*)\n")
 # -------------------------------------------------------------------
 
+@profile
 def main():
     cpu_usages = []
     with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
@@ -28,6 +29,7 @@ def main():
 def summarise(cpu_usages):
     print "avg: %s" % (sum(cpu_usages) / len(cpu_usages), )
 
+@profile
 def process_line(line, cpu_usages):
     re_obj = re_log_line.search(line)
     try:
