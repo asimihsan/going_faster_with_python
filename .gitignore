@@ -36,3 +36,5 @@ nosetests.xml
 *.lprof
 *.stats
 example.log.bz2
+doc/presentation/.sass-cache
+src/__pycache__
