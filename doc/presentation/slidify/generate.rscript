@@ -1,0 +1,7 @@
+#!/usr/bin/Rscript
+
+require(devtools)
+library(slidify)
+slidify("index.Rmd")
+publish('going_faster_with_python', host='dropbox')
+

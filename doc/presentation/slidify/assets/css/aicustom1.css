@@ -1,0 +1,54 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic,600italic,700italic,900italic&subset=latin,latin-ext);
+@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700&subset=latin,latin-ext);
+
+slide:not(.segue) h2,
+slide:not(.segue) h3,
+slides slide.large article p,
+article p, article li, article li.build {
+    font-family: 'Source Sans Pro', 'Helvetica', 'Crimson Text', 'Garamond', 'Palatino', sans-serif;
+}
+
+slide:not(.segue) h2 code {
+    color: #CC2904;
+}
+
+pre code {
+    font-family: 'Inconsolata', Menlo, Monaco, Consolas, monospace;
+}
+
+.contrain_code code {
+    max-height: 500px;
+    overflow: auto;
+}
+
+slides slide.large article p {
+    font-size: 52px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1.2em;
+}
+
+slides > slide > hgroup + article p {
+    margin-bottom: 0;
+}
+
+article p, article li, article li.build {
+    font-size: 32px;
+    text-align: left;
+}
+
+blockquote {
+    padding-left: 1em;
+    margin-bottom: 1em;
+    border-left: 3px solid #ccc;
+    font-style: italic;
+}
+
+article strong {
+    font-weight: bold;
+}
+
+article em {
+    font-style: italic;
+}
+

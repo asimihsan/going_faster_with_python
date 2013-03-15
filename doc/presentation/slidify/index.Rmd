@@ -1,0 +1,302 @@
+---
+title       : Going Faster With Python
+subtitle    : 
+author      : Asim Ihsan
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax] # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+---
+
+## Contents
+
+-   Case study: Log Parsing
+-   When to optimise
+-   Where to optimise
+-   How to optimise
+
+--- &vcenter .large
+
+This is online.
+
+[http://asimihsan.com](http://asimihsan.com)
+
+--- &vcenter .large
+
+Case study: log parsing
+
+---
+
+## Log Parsing
+
+-   Input: bzip-compressed log file.
+    -   Format: `epoch,metric,value`
+
+            1362331306,cpu_usage,74
+            1362331307,memory_usage,1396
+            1362331308,cpu_usage,13
+            ...
+
+-   Output: arithmetic mean of CPU usage.
+    -   Metric = `cpu_usage`
+
+---
+
+```python
+re_log_line = re.compile("(.*?),(.*?),(.*)\n")
+
+def main():
+    cpu_usages = []
+    with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+        for line in f_in:
+            process_line(line, cpu_usages)
+    summarise(cpu_usages)
+
+def summarise(cpu_usages):
+    print "avg: %s" % (sum(cpu_usages) / len(cpu_usages), )
+
+def process_line(line, cpu_usages):
+    re_obj = re_log_line.search(line)
+    try:
+        elems = re_obj.groups()
+    except:
+        pass
+    else:
+        if elems[1] == "cpu_usage":
+            cpu_usages.append(int(elems[2]))
+```
+
+--- &vcenter .large
+
+When to optimise
+
+--- &vcenter
+
+> Premature optimization is the root of all evil. --Donald Knuth
+
+--- &vcenter
+
+> "Programmers waste enormous amounts of time thinking about, or
+ worrying about, the speed of noncritical parts of their
+ programs, and these attempts at efficiency actually have a
+ strong negative impact when debugging and maintenance are
+ considered. **We should forget about small efficiencies**, say
+ about 97% of the time: premature optimization is the root of
+ all evil. **Yet we should not pass up our opportunities in that
+ critical 3%**." --Donald Knuth
+
+---
+
+## When to optimise
+
+1.   Get it right.
+2.   Test it's right.
+3.   Profile if slow.
+4.   **Optimise**.
+5.   Go to step 2.
+
+---
+
+## When to optimise
+
+-   ...but there's "getting it right" and "getting it right".
+-   How easy will you make your life *if you do need to optimise*?
+-   Can you make it easier?
+-   Components.
+-   Interfaces.
+
+--- &vcenter
+
+> “If there’s a moral to this story, it is this: do not let performance considerations stop you from doing what is right. You can always make the code faster with a little cleverness. You can rarely recover so easily from a bad design...**Design the program you want in the way it should be designed. Then, and only then, should you worry about performance**. More often than not, you’ll discover the program is fast enough on your first pass.” –Elliotte Rusty Harold
+
+(from Chapter 5 (Correct, Beautiful, Fast) in [*Beautiful Code*](http://shop.oreilly.com/product/9780596510046.do) by O'Reilly, an extraordinary book).
+
+--- &vcenter .large
+
+Where to optimise
+
+---
+
+## Where to optimise
+
+-   `cProfile` is a great built-in deterministic profiler.
+    -   **deterministic** $\Rightarrow$ comprehensive; observer effect!
+-   `kcachegrind` is the most user-friendly way to explore call graphs.
+-   `line_profiler` has even higher overhead, but allows you line-by-line insight.
+
+*** pnotes
+
+-   Article has more detail is more comprehensive.
+-   This is just a list of favourites.
+
+---
+
+## `cProfile` from CLI
+
+```
+python -m cProfile -o profile.stats parse_log.py
+```
+
+-   Outputs `profile.stats` to current directory.
+-   Can get a list of "hot functions" quite easily:
+
+```
+python -c "import pstats; p = pstats.Stats('profile.stats'); p.sort_stats('time').print_stats(5)"
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  5000000   12.930    0.000   23.044    0.000 cpu_profiling/parse_log.py:31(process_line)
+        1    8.666    8.666   31.756   31.756 cpu_profiling/parse_log.py:21(main)
+  5000000    7.917    0.000    7.917    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+  5000000    1.621    0.000    1.621    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+  5000065    0.575    0.000    0.575    0.000 {method 'append' of 'list' objects}
+```
+
+--- .contrain_code
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  5000000   12.930    0.000   23.044    0.000 cpu_profiling/parse_log.py:31(process_line)
+        1    8.666    8.666   31.756   31.756 cpu_profiling/parse_log.py:21(main)
+  5000000    7.917    0.000    7.917    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+  5000000    1.621    0.000    1.621    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+  5000065    0.575    0.000    0.575    0.000 {method 'append' of 'list' objects}
+```
+
+-   Program took 31.756s to run.
+-   **`tottime`**: total time spent in function *excluding* calls to subfunctions.
+-   **`cumtime`**: total time spent in function *including* calls to subfunctions.
+-   Note the obvious for `main`, that `cumtime = percall` and `ncalls = 1`.
+-   Top three functions take $\frac{12.930+8.666+7.917}{31.756} \times 100 = 92.9\%$ of time.
+
+--- .contrain_code
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  5000000   12.930    0.000   23.044    0.000 cpu_profiling/parse_log.py:31(process_line)
+  5000000    7.917    0.000    7.917    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+  5000000    1.621    0.000    1.621    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+  5000065    0.575    0.000    0.575    0.000 {method 'append' of 'list' objects}
+
+def process_line(line, cpu_usages):
+    re_obj = re_log_line.search(line)
+    try:
+        elems = re_obj.groups()
+    except:
+        pass
+    else:
+        if elems[1] == "cpu_usage":
+            cpu_usages.append(int(elems[2]))
+```
+
+-   `process_line` takes $\frac{12.930}{31.756} \times 100 = 40.7\%$ of the time **excluding** calls to subfunctions.
+
+--- .contrain_code
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    8.666    8.666   31.756   31.756 cpu_profiling/parse_log.py:21(main)
+
+def main():
+    cpu_usages = []
+    with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+        for line in f_in:
+            process_line(line, cpu_usages)
+    summarise(cpu_usages)
+```
+
+-   `main` takes $\frac{8.666}{31.756} \times 100 = 27.3\%$ of time, **excluding** calls to subfunctions.
+-   Why? Stay tuned :)
+
+--- .contrain_code
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  5000000   12.930    0.000   23.044    0.000 cpu_profiling/parse_log.py:31(process_line)
+        1    8.666    8.666   31.756   31.756 cpu_profiling/parse_log.py:21(main)
+  5000000    7.917    0.000    7.917    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+  5000000    1.621    0.000    1.621    0.000 {method 'groups' of '_sre.SRE_Match' objects}
+  5000065    0.575    0.000    0.575    0.000 {method 'append' of 'list' objects}
+
+def main():
+    cpu_usages = []
+    with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+        for line in f_in:
+            process_line(line, cpu_usages)
+    summarise(cpu_usages)
+
+def summarise(cpu_usages):
+    print "avg: %s" % (sum(cpu_usages) / len(cpu_usages), )
+```
+
+-   And...where is `summarise`?!
+-   Correct answer: at the moment **it is completely irrelevant**.
+
+--- .contrain_code
+
+## `line_profiler`
+
+```python
+(going_faster_with_python)Mill:src ai$ kernprof.py -l -v cpu_profiling/parse_log_line_profiler.py
+
+File: cpu_profiling/parse_log_line_profiler.py
+Function: main at line 21
+Total time: 105.217 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    21                                           @profile
+    22                                           def main():
+    23         1            2      2.0      0.0      cpu_usages = []
+    24         1           34     34.0      0.0      with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+    25   5000001     11602598      2.3     11.0          for line in f_in:
+    26   5000000     93565103     18.7     88.9              process_line(line, cpu_usages)
+    27         1        49088  49088.0      0.0      summarise(cpu_usages)
+```
+
+-   Nothing surprising.   
+
+--- .contrain_code
+
+```python
+File: cpu_profiling/parse_log_line_profiler.py
+Function: process_line at line 32
+Total time: 44.2081 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    32                                           @profile
+    33                                           def process_line(line, cpu_usages):
+    34   5000000     14758591      3.0     33.4      re_obj = re_log_line.search(line)
+    35   5000000      4406648      0.9     10.0      try:
+    36   5000000      6765236      1.4     15.3          elems = re_obj.groups()
+    37                                               except:
+    38                                                   pass
+    39                                               else:
+    40   5000000      5814440      1.2     13.2          if elems[1] == "cpu_usage":
+    41   5000000     12463137      2.5     28.2              cpu_usages.append(int(elems[2]))
+```
+
+-   `try` takes up time, and line 41 is opaque
+
+---
+
+## Math
+
+$\sum_{i=1}^{n} 1 = n$
+
+--- &twocol
+
+## Example Two Column Layout
+
+*** left
+
+-   point 1
+-   point 2
+
+*** right
+
+-   point 3
+-   point 4
+
