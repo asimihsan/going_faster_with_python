@@ -627,11 +627,11 @@ def _make_ffi_process_line():
 
     static char* regex = "(.*?),(.*?),(.*)";
     static pcre* re;
+    static pcre_extra* extra;
 
     pcre* compile_regexp(char* regexp) {
         const char* error;
         int erroffset;
-        pcre_extra* extra;
         re = pcre_compile(regex,
                           PCRE_UTF8,
                           &error,
@@ -640,11 +640,16 @@ def _make_ffi_process_line():
         if (!re) {
             printf("pcre_compile failed (offset: %d), %s\n", erroffset, error);
         }
-        extra = pcre_study(re, 0, &error);
+        return re;
+    }
+
+    pcre_extra* study_regexp(pcre* compiled_regexp) {
+        const char* error;
+        extra = pcre_study(re, PCRE_STUDY_JIT_COMPILE, &error);
         if (error != NULL) {
             printf("pcre_study failed: '%s'\n", error);
         }
-        return re;
+        return extra;
     }
 
     int process_line(const char* line) {
@@ -656,9 +661,10 @@ def _make_ffi_process_line():
         int metric_len;
         if (!re) {
             re = compile_regexp(regex);
+            extra = study_regexp(re);
         }
         int offsets[MAX_OFFSETS];
-        rc = pcre_exec(re, NULL, line, strlen(line), 0, 0, offsets, MAX_OFFSETS);
+        rc = pcre_exec(re, extra, line, strlen(line), 0, 0, offsets, MAX_OFFSETS);
         if (rc < 0) {
             if (rc == PCRE_ERROR_NOMATCH) printf("Did not match\n");
             else printf("Matching error %d\n", rc);
@@ -690,16 +696,16 @@ process_line = _cffi_parse_log._make_ffi_process_line()
 
 -   Recall the speeds of the Python code with `map`: 22.7s, 22.3s, 23.2s
 -   Recall the speeds of the `Cython` version: 18.2s, 17.3s, 16.8s
--   The `CFFI` speeds: 11.6s, 11.7s, 11.5s
--   `CFFI` after re-compiling `pcre` with `--enable-jit` gives: 11.4s, 11.4s, 11.2s
+-   The `CFFI` speeds: 11.7s, 11.7s, 12.0s
+-   `CFFI` after re-compiling `pcre` with `--enable-jit` and then using JIT gives: 7.2s, 7.4s, 6.9s
 
 ---
 
 ## `CFFI`: replacing `process_line()`
 
--   CFFI is $\frac{11.4-22.7}{22.7} \approx 50\%$ faster than the Python version.
--   CFFI with non-JIT `pcre` is is $\frac{11.6-17.3}{17.3} \approx 33\%$ faster than the Cython version.
--   CFFI with JIT `pcre` is is $\frac{11.4-17.3}{17.3} \approx 34\%$ faster than the Cython version.
+-   CFFI is $\frac{7.2-22.7}{22.7} \approx 68\%$ faster than the Python version.
+-   CFFI with non-JIT `pcre` is is $\frac{11.7-17.3}{17.3} \approx 32\%$ faster than the Cython version.
+-   CFFI with JIT `pcre` is is $\frac{7.2-17.3}{17.3} \approx 58\%$ faster than the Cython version.
 
 --- .contents_section_4
 
