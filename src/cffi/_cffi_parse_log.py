@@ -26,11 +26,11 @@ def _make_ffi_process_line():
 
     static char* regex = "(.*?),(.*?),(.*)";
     static pcre* re;
+    static pcre_extra* extra;
 
     pcre* compile_regexp(char* regexp) {
         const char* error;
         int erroffset;
-        pcre_extra* extra;
         re = pcre_compile(regex,
                           PCRE_UTF8,
                           &error,
@@ -39,11 +39,16 @@ def _make_ffi_process_line():
         if (!re) {
             printf("pcre_compile failed (offset: %d), %s\n", erroffset, error);
         }
-        extra = pcre_study(re, 0, &error);
+        return re;
+    }
+
+    pcre_extra* study_regexp(pcre* compiled_regexp) {
+        const char* error;
+        extra = pcre_study(re, PCRE_STUDY_JIT_COMPILE, &error);
         if (error != NULL) {
             printf("pcre_study failed: '%s'\n", error);
         }
-        return re;
+        return extra;
     }
 
     int process_line(const char* line) {
@@ -55,9 +60,10 @@ def _make_ffi_process_line():
         int metric_len;
         if (!re) {
             re = compile_regexp(regex);
+            extra = study_regexp(re);
         }
         int offsets[MAX_OFFSETS];
-        rc = pcre_exec(re, NULL, line, strlen(line), 0, 0, offsets, MAX_OFFSETS);
+        rc = pcre_exec(re, extra, line, strlen(line), 0, 0, offsets, MAX_OFFSETS);
         if (rc < 0) {
             if (rc == PCRE_ERROR_NOMATCH) printf("Did not match\n");
             else printf("Matching error %d\n", rc);
