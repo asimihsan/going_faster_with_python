@@ -1,0 +1,670 @@
+events: Ticks
+summary: 18598
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=closing /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:132
+132 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:90
+90 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=parse /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:663
+663 0
+cfn=get /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:201
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 201
+663 0
+cfn=_parse_sub /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:301
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 301
+663 0
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:67
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 67
+663 0
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:178
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 178
+663 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py
+fn=_compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py:226
+226 0
+cfn=isstring /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:474
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=1 474
+226 0
+cfn={isinstance} ~:0
+cfi=~
+calls=1 0
+226 0
+cfn=compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:495
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=1 495
+226 0
+cfn={method 'get' of 'dict' objects} ~:0
+cfi=~
+calls=1 0
+226 0
+cfn={len} ~:0
+cfi=~
+calls=1 0
+226 0
+
+fi=~
+fn={getattr} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+fn=_simple /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:354
+354 0
+cfn=__getitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:130
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 130
+354 0
+cfn=getwidth /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:140
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 140
+354 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+fn=isabs /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:51
+51 0
+cfn={method 'startswith' of 'str' objects} ~:0
+cfi=~
+calls=1 0
+51 0
+
+fi=~
+fn={method 'items' of 'dict' objects} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=match /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:195
+195 0
+cfn=__next /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:182
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=5 182
+195 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__len__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:126
+126 0
+cfn={len} ~:0
+cfi=~
+calls=14 0
+126 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+fn=isstring /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:474
+474 0
+cfn={isinstance} ~:0
+cfi=~
+calls=2 0
+474 0
+
+fi=~
+fn={setattr} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=get /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:201
+201 0
+cfn=__next /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:182
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=14 182
+201 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py
+fn=_Feature /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py:74
+74 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=_parse /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:379
+379 0
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:90
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=4 90
+379 0
+cfn=match /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:195
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=9 195
+379 0
+cfn=__len__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:126
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=9 126
+379 0
+cfn=get /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:201
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=13 201
+379 0
+cfn=__setitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:134
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 134
+379 0
+cfn=__getitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:130
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=9 130
+379 0
+cfn=append /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:138
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=9 138
+379 0
+cfn=_parse_sub /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:301
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 301
+379 0
+cfn=opengroup /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:72
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 72
+379 0
+cfn=closegroup /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:83
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 83
+379 0
+cfn={ord} ~:0
+cfi=~
+calls=3 0
+379 0
+cfn={len} ~:0
+cfi=~
+calls=3 0
+379 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__setitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:134
+134 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py
+fn=compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py:188
+188 0
+cfn=_compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py:226
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py
+calls=1 226
+188 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=GeneratorContextManager /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:9
+9 0
+
+fi=~
+fn={posix.getcwd} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:149
+149 0
+
+fi=cpu_profiling/parse_log.py
+fn=process_line cpu_profiling/parse_log.py:31
+31 1502
+cfn={method 'search' of 'SRE_Pattern' objects} ~:0
+cfi=~
+calls=45161 0
+31 274
+cfn={method 'groups' of 'SRE_Match' objects} ~:0
+cfi=~
+calls=45161 0
+31 125
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=45156 0
+31 65
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py
+fn=__call__ /usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py:19
+19 0
+cfn=update_wrapper /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py:17
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py
+calls=1 17
+19 0
+
+fi=~
+fn={method 'update' of 'dict' objects} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+fn=normpath /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:312
+312 0
+cfn={method 'startswith' of 'str' objects} ~:0
+cfi=~
+calls=2 0
+312 0
+cfn={method 'join' of 'str' objects} ~:0
+cfi=~
+calls=1 0
+312 0
+cfn={isinstance} ~:0
+cfi=~
+calls=1 0
+312 0
+cfn={method 'pop' of 'list' objects} ~:0
+cfi=~
+calls=1 0
+312 0
+cfn={method 'split' of 'str' objects} ~:0
+cfi=~
+calls=1 0
+312 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=7 0
+312 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__getitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:130
+130 0
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:90
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=3 90
+130 0
+cfn={isinstance} ~:0
+cfi=~
+calls=26 0
+130 0
+
+fi=~
+fn={method 'startswith' of 'str' objects} ~:0
+0 0
+
+fi=~
+fn={callable} ~:0
+0 0
+
+fi=~
+fn={method 'search' of 'SRE_Pattern' objects} ~:0
+0 274
+
+fi=~
+fn={method 'groups' of 'SRE_Match' objects} ~:0
+0 125
+
+fi=~
+fn={min} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+fn=abspath /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:341
+341 0
+cfn=isabs /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:51
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+calls=1 51
+341 0
+cfn={posix.getcwd} ~:0
+cfi=~
+calls=1 0
+341 0
+cfn=normpath /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:312
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+calls=1 312
+341 0
+cfn={isinstance} ~:0
+cfi=~
+calls=1 0
+341 0
+cfn=join /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:60
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+calls=1 60
+341 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py
+fn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py:12
+12 0
+cfn={callable} ~:0
+cfi=~
+calls=1 0
+12 0
+
+fi=~
+fn={method 'join' of 'str' objects} ~:0
+0 0
+
+fi=~
+fn={isinstance} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py
+fn=<module> /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py:1
+1 0
+cfn=_Feature /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py:74
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py
+calls=1 74
+1 0
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py:75
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py
+calls=7 75
+1 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+fn=join /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:60
+60 0
+cfn={method 'startswith' of 'str' objects} ~:0
+cfi=~
+calls=5 0
+60 0
+cfn={method 'endswith' of 'str' objects} ~:0
+cfi=~
+calls=5 0
+60 0
+
+fi=cpu_profiling/parse_log.py
+fn=<module> cpu_profiling/parse_log.py:3
+3 4
+cfn=compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py:188
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/re.py
+calls=1 188
+3 0
+cfn=abspath /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:341
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+calls=1 341
+3 0
+cfn=<module> /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py:1
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py
+calls=1 1
+3 0
+cfn=join /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py:60
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/posixpath.py
+calls=3 60
+3 0
+cfn=main cpu_profiling/parse_log.py:21
+cfi=cpu_profiling/parse_log.py
+calls=1 21
+3 18592
+cfn=<module> /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:1
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 1
+3 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=contextmanager /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:54
+54 0
+cfn=__call__ /usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py:19
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py
+calls=1 19
+54 0
+cfn=wraps /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py:39
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py
+calls=1 39
+54 0
+
+fi=~
+fn={method 'pop' of 'list' objects} ~:0
+0 0
+
+fi=~
+fn={method 'close' of 'BZ2File' objects} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=__exit__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:153
+153 0
+cfn={method 'close' of 'BZ2File' objects} ~:0
+cfi=~
+calls=1 0
+153 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py
+fn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/__future__.py:75
+75 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+fn=compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:495
+495 0
+cfn=parse /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:663
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 663
+495 0
+cfn={method 'items' of 'dict' objects} ~:0
+cfi=~
+calls=1 0
+495 0
+cfn=isstring /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:474
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=1 474
+495 0
+cfn=_code /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:480
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=1 480
+495 0
+
+fi=~
+fn={method 'remove' of 'list' objects} ~:0
+0 0
+
+fi=~
+fn={method 'disable' of '_lsprof.Profiler' objects} ~:0
+0 0
+
+fi=~
+fn={method 'get' of 'dict' objects} ~:0
+0 0
+
+fi=cpu_profiling/parse_log.py
+fn=main cpu_profiling/parse_log.py:21
+21 16623
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:149
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 149
+21 0
+cfn=process_line cpu_profiling/parse_log.py:31
+cfi=cpu_profiling/parse_log.py
+calls=45161 31
+21 1968
+cfn=__exit__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:153
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 153
+21 0
+cfn=__enter__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:151
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 151
+21 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=append /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:138
+138 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=9 0
+138 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+fn=_compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:32
+32 0
+cfn=_simple /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:354
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=3 354
+32 0
+cfn=__getitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:130
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=12 130
+32 0
+cfn=_compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:32
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=6 32
+32 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=36 0
+32 0
+cfn={len} ~:0
+cfi=~
+calls=6 0
+32 0
+
+fi=~
+fn={method 'endswith' of 'str' objects} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__next /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:182
+182 0
+cfn={len} ~:0
+cfi=~
+calls=37 0
+182 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=getwidth /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:140
+140 0
+cfn={min} ~:0
+cfi=~
+calls=14 0
+140 0
+cfn=getwidth /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:140
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=6 140
+140 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=_parse_sub /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:301
+301 0
+cfn=match /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:195
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=7 195
+301 0
+cfn=_parse /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:379
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=4 379
+301 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=4 0
+301 0
+cfn={len} ~:0
+cfi=~
+calls=4 0
+301 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+fn=_compile_info /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:361
+361 0
+cfn=__len__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:126
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 126
+361 0
+cfn=__getitem__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:130
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=2 130
+361 0
+cfn=getwidth /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:140
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 140
+361 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=5 0
+361 0
+cfn={len} ~:0
+cfi=~
+calls=3 0
+361 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=opengroup /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:72
+72 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=3 0
+72 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+fn=_code /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:480
+480 0
+cfn=_compile /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:32
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=1 32
+480 0
+cfn=_compile_info /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py:361
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_compile.py
+calls=1 361
+480 0
+cfn={method 'append' of 'list' objects} ~:0
+cfi=~
+calls=1 0
+480 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=closegroup /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:83
+83 0
+cfn={method 'remove' of 'list' objects} ~:0
+cfi=~
+calls=3 0
+83 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:67
+67 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py
+fn=wraps /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py:39
+39 0
+cfn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py:12
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib_pypy/_functools.py
+calls=1 12
+39 0
+
+fi=~
+fn={method 'split' of 'str' objects} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+fn=__init__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:178
+178 0
+cfn=__next /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:182
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=1 182
+178 0
+
+fi=~
+fn={method 'append' of 'list' objects} ~:0
+0 65
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=__enter__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:151
+151 0
+
+fi=~
+fn={ord} ~:0
+0 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+fn=<module> /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:1
+1 0
+cfn=closing /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:132
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 132
+1 0
+cfn=GeneratorContextManager /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:9
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 9
+1 0
+cfn=contextmanager /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py:54
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/contextlib.py
+calls=1 54
+1 0
+
+fi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py
+fn=update_wrapper /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/functools.py:17
+17 0
+cfn={getattr} ~:0
+cfi=~
+calls=5 0
+17 0
+cfn={setattr} ~:0
+cfi=~
+calls=3 0
+17 0
+cfn={method 'update' of 'dict' objects} ~:0
+cfi=~
+calls=1 0
+17 0
+
+fi=~
+fn={len} ~:0
+0 0
+cfn=__len__ /usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py:126
+cfi=/usr/local/Cellar/pypy/2.0-beta1/lib-python/2.7/sre_parse.py
+calls=4 126
+0 0
+
