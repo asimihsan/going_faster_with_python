@@ -340,6 +340,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 -   `timeit`: for timing short code segments
 -   `dis`: for taking a peek at the CPython bytecode for code segments
+-   For reference, my platform: 1.8 GHz Intel Core i7 4-cores, Mac OS X 10.8.2 64-bit, 4GB 1333 MHz DDR3 RAM, CPython 2.7.3, PyPy 2.0 beta 1, CFFI 0.5, Cython 0.18, gcc 4.7.2
 
 ---
 
@@ -707,6 +708,21 @@ process_line = _cffi_parse_log._make_ffi_process_line()
 -   CFFI with non-JIT `pcre` is is $\frac{11.7-17.3}{17.3} \approx 32\%$ faster than the Cython version.
 -   CFFI with JIT `pcre` is is $\frac{7.2-17.3}{17.3} \approx 58\%$ faster than the Cython version.
 
+--- &twocol_uncentered
+
+## You can have your cake and eat it too
+
+-   Python: less code, more declarative and functional.
+-   C: the undisputed king of the hill, easy to write the code, more difficult to structure and maintain entire programmes.
+
+*** left
+
+![Great Language Shootout table](assets/img/04_great_language_shootout_table.png)
+
+*** right
+
+![Great Language Shootout boxplots](assets/img/05_great_language_shootout_boxplots.png)
+
 --- .contents_section_4
 
 ## How to optimise
@@ -784,5 +800,7 @@ process_line = _cffi_parse_log._make_ffi_process_line()
 -   Cython is awesome and cheap to try...for CPython only!
 -   CFFI is awesome and a bit expensive to try...for CPython and PyPy!
 
----
+--- &vcenter .large
+
+Thank you!  
 
