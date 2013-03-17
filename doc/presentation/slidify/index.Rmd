@@ -691,8 +691,15 @@ process_line = _cffi_parse_log._make_ffi_process_line()
 -   Recall the speeds of the Python code with `map`: 22.7s, 22.3s, 23.2s
 -   Recall the speeds of the `Cython` version: 18.2s, 17.3s, 16.8s
 -   The `CFFI` speeds: 11.6s, 11.7s, 11.5s
--   CFFI is $\frac{11.6-22.7}{22.7} \approx 49\%$ faster than the Python version.
--   CFFI is $\frac{11.6-17.3}{17.3} \approx 33\%$ faster than the Cython version.
+-   `CFFI` after re-compiling `pcre` with `--enable-jit` gives: 11.4s, 11.4s, 11.2s
+
+---
+
+## `CFFI`: replacing `process_line()`
+
+-   CFFI is $\frac{11.4-22.7}{22.7} \approx 50\%$ faster than the Python version.
+-   CFFI with non-JIT `pcre` is is $\frac{11.6-17.3}{17.3} \approx 33\%$ faster than the Cython version.
+-   CFFI with JIT `pcre` is is $\frac{11.4-17.3}{17.3} \approx 34\%$ faster than the Cython version.
 
 --- .contents_section_4
 
