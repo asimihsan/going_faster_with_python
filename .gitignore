@@ -38,3 +38,5 @@ nosetests.xml
 example.log.bz2
 doc/presentation/.sass-cache
 src/__pycache__
+src/cffi/__pycache__
+process_line.c
