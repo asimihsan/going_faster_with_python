@@ -19,13 +19,18 @@ mode        : selfcontained # {standalone, draft}
 
 --- &vcenter .large
 
-This is online.
+Much more is online.
 
 [http://asimihsan.com](http://asimihsan.com)
 
---- &vcenter .large
+--- .contents_section_1
 
-Case study: log parsing
+## Contents
+
+-   Case study: Log Parsing
+-   When to optimise
+-   Where to optimise
+-   How to optimise
 
 ---
 
@@ -68,9 +73,14 @@ def process_line(line, cpu_usages):
             cpu_usages.append(int(elems[2]))
 ```
 
---- &vcenter .large
+--- .contents_section_2
 
-When to optimise
+## Contents
+
+-   Case study: Log Parsing
+-   When to optimise
+-   Where to optimise
+-   How to optimise
 
 --- &vcenter
 
@@ -113,9 +123,14 @@ When to optimise
 
 (from Chapter 5 (Correct, Beautiful, Fast) in [*Beautiful Code*](http://shop.oreilly.com/product/9780596510046.do) by O'Reilly, an extraordinary book).
 
---- &vcenter .large
+--- .contents_section_3
 
-Where to optimise
+## Contents
+
+-   Case study: Log Parsing
+-   When to optimise
+-   Where to optimise
+-   How to optimise
 
 ---
 
@@ -153,7 +168,7 @@ python -c "import pstats; p = pstats.Stats('profile.stats'); p.sort_stats('time'
   5000065    0.575    0.000    0.575    0.000 {method 'append' of 'list' objects}
 ```
 
---- .contrain_code
+---
 
 ```
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
@@ -170,7 +185,7 @@ python -c "import pstats; p = pstats.Stats('profile.stats'); p.sort_stats('time'
 -   Note the obvious for `main`, that `cumtime = percall` and `ncalls = 1`.
 -   Top three functions take $\frac{12.930+8.666+7.917}{31.756} \times 100 = 92.9\%$ of time.
 
---- .contrain_code
+---
 
 ```
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
@@ -192,7 +207,7 @@ def process_line(line, cpu_usages):
 
 -   `process_line` takes $\frac{12.930}{31.756} \times 100 = 40.7\%$ of the time **excluding** calls to subfunctions.
 
---- .contrain_code
+---
 
 ```
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
@@ -209,7 +224,7 @@ def main():
 -   `main` takes $\frac{8.666}{31.756} \times 100 = 27.3\%$ of time, **excluding** calls to subfunctions.
 -   Why? Stay tuned :)
 
---- .contrain_code
+---
 
 ```
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
@@ -233,7 +248,21 @@ def summarise(cpu_usages):
 -   And...where is `summarise`?!
 -   Correct answer: at the moment **it is completely irrelevant**.
 
---- .contrain_code
+---
+
+## `kcachegrind`
+
+-   Download KCachegrind source, build QT GUI called `QCachegrind`.
+-   Generate a `cProfile` output file, as before.
+-   `pip install pyprof2calltree`
+-   `pyprof2calltree -i profile.stats -o callgrind.output`
+-   Open `callgrind.output` in `QCachegrind`
+
+--- &vcenter
+
+![QCachegrind screenshot](assets/img/01_qcachegrind.png)
+
+--- 
 
 ## `line_profiler`
 
@@ -257,7 +286,7 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 -   Nothing surprising.   
 
---- .contrain_code
+---
 
 ```python
 File: cpu_profiling/parse_log_line_profiler.py
@@ -280,23 +309,467 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 -   `try` takes up time, and line 41 is opaque
 
+--- .contents_section_4
+
+## Contents
+
+-   Case study: Log Parsing
+-   When to optimise
+-   Where to optimise
+-   How to optimise
+
 ---
 
-## Math
+## How to optimise
 
-$\sum_{i=1}^{n} 1 = n$
+-   Empathising with CPython
+-   CPython and `Cython`
+-   CPython and `CFFI`
+-   PyPy
+-   PyPy and `Cython`
+-   PyPy and `CFFI`
 
---- &twocol
+---
 
-## Example Two Column Layout
+## CPython
+
+-   Many patterns are surprisingly slow in CPython.
+    -   But which patterns?
+
+>   **"In God we trust; all others bring data"** [The Elements of Statistical Learning, part of machine learning canon]
+
+-   `timeit`: for timing short code segments
+-   `dis`: for taking a peek at the CPython bytecode for code segments
+
+---
+
+## `timeit` on original code
+
+```python
+In [1]: def main():
+   ...:     # <snip>
+   ...:     with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+   ...:         for line in f_in:
+   ...:             process_line(line, cpu_usages)
+
+In [2]: timeit.timeit("main()", setup="from __main__ import main", number=3) / 3
+Out[2]: 29.2360786596934
+```
+
+-   There's not much going on here...or is there?
+
+---
+
+## `map` vs. `for`
+
+```
+In [4]: def main_2():
+   ...:     # <snip>
+   ...:     with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+   ...:         cpu_usages = map(process_line, f_in)
+
+In [5]: timeit.timeit("main_2()", setup="from __main__ import main_2", number=3) / 3
+Out[5]: 22.399725993474323 
+```
+
+-   $\frac{22.4 - 29.2}{29.2} \times 100 \approx 23\%$ faster.
+-   Why? What is `map` doing, if not exactly what `for` is?
+-   Wrong question. Not what, but **how**?
+
+--- .constrain_code &twocol_uncentered 
+
+## `map` vs. `for`
 
 *** left
 
--   point 1
--   point 2
+```python
+In [1]:  def f1(iterable):
+  ....:      return map(function, iterable)
+In [2]: dis.dis(f1)
+  2           0 LOAD_GLOBAL              0 (map)
+              3 LOAD_GLOBAL              1 (function)
+              6 LOAD_FAST                0 (iterable)
+              9 CALL_FUNCTION            2
+             12 RETURN_VALUE
+```
+
+-   `map` isn't written in Python!
+-   Defer expensive operations to C modules, especially built-ins. 
 
 *** right
 
--   point 3
--   point 4
+```python
+In [3]:  def f2(iterable):
+  ....:      return_value = []
+  ....:      for element in iterable:
+  ....:          return_value.append(function(element))
+  ....:      return return_value
+
+In [4]: dis.dis(f2)
+  2           0 BUILD_LIST               0
+              3 STORE_FAST               1 (return_value)
+
+  3           6 SETUP_LOOP              33 (to 42)
+              9 LOAD_FAST                0 (iterable)
+             12 GET_ITER            
+        >>   13 FOR_ITER                25 (to 41)
+             16 STORE_FAST               2 (element)
+
+  4          19 LOAD_FAST                1 (return_value)
+             22 LOAD_ATTR                0 (append)
+             25 LOAD_GLOBAL              1 (function)
+             28 LOAD_FAST                2 (element)
+             31 CALL_FUNCTION            1
+             34 CALL_FUNCTION            1
+             37 POP_TOP             
+             38 JUMP_ABSOLUTE           13
+        >>   41 POP_BLOCK           
+        >>   42 LOAD_CONST               0 (None)
+             43 RETURN_VALUE        
+             46 RETURN_VALUE
+```
+
+--- .constrain_code &twocol_uncentered 
+
+## list comprehension vs. `for`
+
+*** left
+
+```python
+In [1]:  def f3(iterable):
+  ....:      return [function(elem) for elem in iterable]
+In [2]:  dis.dis(f3)
+  2           0 BUILD_LIST               0
+              3 LOAD_FAST                0 (iterable)
+              6 GET_ITER            
+        >>    7 FOR_ITER                18 (to 28)
+             10 STORE_FAST               1 (elem)
+             13 LOAD_GLOBAL              0 (function)
+             16 LOAD_FAST                1 (elem)
+             19 CALL_FUNCTION            1
+             22 LIST_APPEND              2
+             25 JUMP_ABSOLUTE            7
+```
+
+-   Prefer list comprehensions to regular `for` loops.
+
+*** right
+
+```python
+In [3]:  def f2(iterable):
+  ....:      return_value = []
+  ....:      for element in iterable:
+  ....:          return_value.append(function(element))
+  ....:      return return_value
+
+In [4]: dis.dis(f2)
+  2           0 BUILD_LIST               0
+              3 STORE_FAST               1 (return_value)
+
+  3           6 SETUP_LOOP              33 (to 42)
+              9 LOAD_FAST                0 (iterable)
+             12 GET_ITER            
+        >>   13 FOR_ITER                25 (to 41)
+             16 STORE_FAST               2 (element)
+
+  4          19 LOAD_FAST                1 (return_value)
+             22 LOAD_ATTR                0 (append)
+             25 LOAD_GLOBAL              1 (function)
+             28 LOAD_FAST                2 (element)
+             31 CALL_FUNCTION            1
+             34 CALL_FUNCTION            1
+             37 POP_TOP             
+             38 JUMP_ABSOLUTE           13
+        >>   41 POP_BLOCK           
+        >>   42 LOAD_CONST               0 (None)
+             43 RETURN_VALUE        
+             46 RETURN_VALUE
+```
+
+--- .contents_section_2
+
+## How to optimise
+
+-   Empathising with CPython
+-   CPython and `Cython`
+-   CPython and `CFFI`
+-   PyPy
+-   PyPy and `Cython`
+-   PyPy and `CFFI`
+
+---
+
+## `Cython`
+
+-   A strict superset of regular Python code.
+-   `Cython` compiles it to C code, then defers to the C compiler to do optimisations.
+-   Steps:
+    1.  Extract a "hot" function into a PYX file.
+    2.  Create an appropriate `setup.py` file to build it.
+    2.  Annotate the PYX with type information.
+    3.  ???
+    4.  Profit!
+
+--- .constrain_code &twocol_uncentered 
+
+## `Cython`: brain-dead first step
+
+-   With no type annotation, no code modification, pop `process_line()` into its own module:
+
+*** left
+
+```python
+# process_line.pyx
+
+import re
+re_log_line = re.compile("(.*?),(.*?),(.*)\n")
+
+def process_line(line):
+    re_obj = re_log_line.search(line)
+    try:
+        elems = re_obj.groups()
+    except:
+        pass
+    else:
+        if elems[1] == "cpu_usage":
+            return int(elems[2])
+```
+
+*** right
+
+```python
+# setup.py
+
+from distutils.core import setup
+from distutils.extension import Extension
+from Cython.Distutils import build_ext
+
+ext_modules = [Extension("process_line", ["process_line.pyx"])]
+
+setup(
+    name = "process_line",
+    cmdclass = {"build_ext": build_ext},
+    ext_modules = ext_modules
+)
+```
+
+---
+
+## `Cython`: brain-dead first step
+
+-   `Cython` generates a 69KB C file (!?!).
+-   Using `time` to time three executions before and after:
+    -   Before: 22.7s, 22.3s, 23.2s
+    -   After: 18.2s, 17.3s, 16.8s
+-   So $\frac{17.3-22.7}{22.7} \times 100 \approx 23.8\%$ improvement, zero effort.
+
+---
+
+## `Cython`: asking for advice
+
+-   Using `cython -a process_line.pyx` you can ask `Cython` how "difficult" it finds certain lines, i.e. where it would appreciate some help.
+
+![Cython HTML annotation output](assets/img/02_cython_html_output.png)
+
+---
+
+## `Cython`: with annotations
+
+-   Only one possible place to make annotations here:
+
+```python
+cpdef int process_line(char *line):
+```
+
+-   This doesn't offer any performance improvements.
+-   Cython has already used automatic type-inference to improve this code.
+    -   Numeric-heavy code can often be improved by orders of magnitude.
+
+--- .contents_section_3
+
+## How to optimise
+
+-   Empathising with CPython
+-   CPython and `Cython`
+-   CPython and `CFFI`
+-   PyPy
+-   PyPy and `Cython`
+-   PyPy and `CFFI`
+
+---
+
+## `CFFI`
+
+-   `CFFI` is a new alternative to `ctypes`.
+-   Relatively new project by the PyPy team.
+    -   And they intend to re-write `ctypes` in `CFFI`.
+-   `CFFI` is supported **by both** CPython and PyPy.
+    -   PyPy 2.0 beta 1 is the first release to officially support `CFFI`.
+-   Great thing about `CFFI`: it actually **looks like C**, so very easy to use (for C developers).
+
+--- .constrain_code
+
+## `CFFI`: replacing `process_line()`
+
+```c
+# _cffi_parse_log.py
+from cffi import FFI
+
+def _make_ffi_process_line():
+    ffi = FFI()
+
+    ffi.cdef(r"""
+    int process_line(const char* line);
+    """)
+
+    lib = ffi.verify(r"""
+    #include "pcre.h"
+
+    static char* regex = "(.*?),(.*?),(.*)";
+    static pcre* re;
+
+    pcre* compile_regexp(char* regexp) {
+        const char* error;
+        int erroffset;
+        pcre_extra* extra;
+        re = pcre_compile(regex,
+                          PCRE_UTF8,
+                          &error,
+                          &erroffset,
+                          0);
+        if (!re) {
+            printf("pcre_compile failed (offset: %d), %s\n", erroffset, error);
+        }
+        extra = pcre_study(re, 0, &error);
+        if (error != NULL) {
+            printf("pcre_study failed: '%s'\n", error);
+        }
+        return re;
+    }
+
+    int process_line(const char* line) {
+        int rc, i;
+        const int MAX_OFFSETS = 30;
+        const char* value;
+        const char* metric;
+        static char* cpu_usage = "cpu_usage";
+        int metric_len;
+        if (!re) {
+            re = compile_regexp(regex);
+        }
+        int offsets[MAX_OFFSETS];
+        rc = pcre_exec(re, NULL, line, strlen(line), 0, 0, offsets, MAX_OFFSETS);
+        if (rc < 0) {
+            if (rc == PCRE_ERROR_NOMATCH) printf("Did not match\n");
+            else printf("Matching error %d\n", rc);
+            return -1;
+        }
+        pcre_get_substring(line, offsets, rc, 2, &(metric));
+        metric_len = offsets[2*2+1] - offsets[2*2];
+        if (!strncmp(metric, cpu_usage, metric_len)) {
+            pcre_get_substring(line, offsets, rc, 3, &(value));
+            return atoi(value);
+        }
+        return -1;
+    };
+    """, libraries=['c', 'pcre'])
+
+    return lib.process_line
+```
+
+---
+
+## `CFFI`: replacing `process_line()`
+
+-   It's written to be a drop-in replacement:
+
+```python
+import _cffi_parse_log
+process_line = _cffi_parse_log._make_ffi_process_line()
+```
+
+-   Recall the speeds of the Python code with `map`: 22.7s, 22.3s, 23.2s
+-   Recall the speeds of the `Cython` version: 18.2s, 17.3s, 16.8s
+-   The `CFFI` speeds: 11.6s, 11.7s, 11.5s
+-   CFFI is $\frac{11.6-22.7}{22.7} \approx 49\%$ faster than the Python version.
+-   CFFI is $\frac{11.6-17.3}{17.3} \approx 33\%$ faster than the Cython version.
+
+--- .contents_section_4
+
+## How to optimise
+
+-   Empathising with CPython
+-   CPython and `Cython`
+-   CPython and `CFFI`
+-   PyPy
+-   PyPy and `Cython`
+-   PyPy and `CFFI`
+
+---
+
+## PyPy
+
+-   PyPy is the future...
+
+![PyPy speed](assets/img/03_pypy_speed.png)
+
+---
+
+## PyPy
+
+-   ...except right now, if you use `bzip2` or `gzip`, you're SOL.
+-   [Issue 770](https://bugs.pypy.org/issue770) tracks `bzip2` being "200%" slower in PyPy.
+-   However, for this presentation I've been unable to see my `parse_log.py` script **ever finish** when running PyPy (left it running overnight).
+    -   Lucky for me; makes this section really short! :)
+
+--- .contents_section_5
+
+## How to optimise
+
+-   Empathising with CPython
+-   CPython and `Cython`
+-   CPython and `CFFI`
+-   PyPy
+-   PyPy and `Cython`
+-   PyPy and `CFFI`
+
+---
+
+## PyPy and `Cython`
+
+-   This doesn't end well, and probably will never get better.
+-   `Cython` compiles down to a C API that directly manipulates various CPython objects.
+-   PyPy is able to talk to the CPython C API objects via a module called `cpyext`.
+-   However, this module reduces `Cython`'s performance by $\approx$ two orders of magnitude.
+-   So, yet again, you're SOL!
+
+--- .contents_section_6
+
+## How to optimise
+
+-   Empathising with CPython
+-   CPython and `Cython`
+-   CPython and `CFFI`
+-   PyPy
+-   PyPy and `Cython`
+-   PyPy and `CFFI`
+
+---
+
+## PyPy and `CFFI`
+
+-   Officially supported on PyPy 2.0 beta 1 (time of writing, released about a month ago).
+-   Very exciting times! I really do think this is the future.
+-   (Perhaps, yes, I could have written a `bzip2` routine in `CFFI`...egh!)
+
+---
+
+## Conclusion
+
+-   Get it right, check it's right, profile.
+-   Defer to built-ins and C extensions, especially in tight loops.
+-   Cython is awesome and cheap to try...for CPython only!
+-   CFFI is awesome and a bit expensive to try...for CPython and PyPy!
+
+---
 

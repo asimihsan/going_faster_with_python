@@ -8,15 +8,22 @@ article p, article li, article li.build {
     font-family: 'Source Sans Pro', 'Helvetica', 'Crimson Text', 'Garamond', 'Palatino', sans-serif;
 }
 
+slide,
+code,
+slides > slide.backdrop,
+.overview slides slide {
+    background: #fdfdfa !important;
+}
+
 slide:not(.segue) h2 code {
     color: #CC2904;
 }
 
 pre code {
-    font-family: 'Inconsolata', Menlo, Monaco, Consolas, monospace;
+    font-family: Consola, Monaco, 'Inconsolata', Menlo, monospace;
 }
 
-.contrain_code code {
+.constrain_code code {
     max-height: 500px;
     overflow: auto;
 }
@@ -51,4 +58,33 @@ article strong {
 article em {
     font-style: italic;
 }
+
+slide img {
+    max-width: 100%;
+}
+
+/* Contents page and indication of location */
+
+.contents_section_1 ul li:nth-child(1) { font-weight: bold; }
+.contents_section_1 ul li:not(:nth-child(1)) { opacity: 0.5; }
+
+.contents_section_2 ul li:nth-child(2) { font-weight: bold; }
+.contents_section_2 ul li:not(:nth-child(2)) { opacity: 0.5; }
+.contents_section_2 ul li:nth-child(-n+1) { text-decoration: line-through; }
+
+.contents_section_3 ul li:nth-child(3) { font-weight: bold; }
+.contents_section_3 ul li:not(:nth-child(3)) { opacity: 0.5; }
+.contents_section_3 ul li:nth-child(-n+2) { text-decoration: line-through; }
+
+.contents_section_4 ul li:nth-child(4) { font-weight: bold; }
+.contents_section_4 ul li:not(:nth-child(4)) { opacity: 0.5; }
+.contents_section_4 ul li:nth-child(-n+3) { text-decoration: line-through; }
+
+.contents_section_5 ul li:nth-child(5) { font-weight: bold; }
+.contents_section_5 ul li:not(:nth-child(5)) { opacity: 0.5; }
+.contents_section_5 ul li:nth-child(-n+4) { text-decoration: line-through; }
+
+.contents_section_6 ul li:nth-child(6) { font-weight: bold; }
+.contents_section_6 ul li:not(:nth-child(6)) { opacity: 0.5; }
+.contents_section_6 ul li:nth-child(-n+5) { text-decoration: line-through; }
 
