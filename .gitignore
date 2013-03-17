@@ -40,3 +40,7 @@ doc/presentation/.sass-cache
 src/__pycache__
 src/cffi/__pycache__
 process_line.c
+doc/presentation/slidify/.RData
+doc/presentation/slidify/.Rhistory
+doc/presentation/slidify/index.html
+doc/presentation/slidify/index.md
