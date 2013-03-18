@@ -49,6 +49,15 @@ Much more is online.
 
 ---
 
+## Code caveat
+
+-   This purpose of this presentation **is not** "how do I parse this log file the fastest?".
+    -   The code that follows is **deliberately obtuse and non-idiomatic**.
+-   I'd like you to take several **core priciples** away.
+-   Pedagogy is very difficult! How do you teach principles without overly difficult examples?
+
+---
+
 ```python
 re_log_line = re.compile("(.*?),(.*?),(.*)\n")
 
@@ -705,8 +714,8 @@ process_line = _cffi_parse_log._make_ffi_process_line()
 ## `CFFI`: replacing `process_line()`
 
 -   CFFI is $\frac{7.2-22.7}{22.7} \approx 68\%$ faster than the Python version.
--   CFFI with non-JIT `pcre` is is $\frac{11.7-17.3}{17.3} \approx 32\%$ faster than the Cython version.
--   CFFI with JIT `pcre` is is $\frac{7.2-17.3}{17.3} \approx 58\%$ faster than the Cython version.
+-   CFFI with non-JIT `pcre` is $\frac{11.7-17.3}{17.3} \approx 32\%$ faster than the Cython version.
+-   CFFI with JIT `pcre` is $\frac{7.2-17.3}{17.3} \approx 58\%$ faster than the Cython version.
 
 --- &twocol_uncentered
 
