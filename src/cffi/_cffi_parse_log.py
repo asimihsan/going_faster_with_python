@@ -15,6 +15,14 @@ for key in distutils.sysconfig._config_vars:
 from cffi import FFI
 
 def _make_ffi_process_line():
+    libraries = ['c', 'pcre']
+    extra_compile_args = []
+    extra_link_args = []
+    #extra_compile_args = ['-fprofile-generate']
+    #extra_link_args = ['-fprofile-generate']
+    #extra_compile_args = ['-fprofile-use']
+    #extra_link_args = ['-fprofile-use']
+
     ffi = FFI()
 
     ffi.cdef(r"""
@@ -77,7 +85,9 @@ def _make_ffi_process_line():
         }
         return -1;
     };
-    """, libraries=['c', 'pcre'])
+    """, libraries=libraries,
+         extra_compile_args=extra_compile_args,
+         extra_link_args=extra_link_args)
 
     return lib.process_line
 

@@ -702,20 +702,33 @@ def _make_ffi_process_line():
 ```python
 import _cffi_parse_log
 process_line = _cffi_parse_log._make_ffi_process_line()
-```
 
--   Recall the speeds of the Python code with `map`: 22.7s, 22.3s, 23.2s
--   Recall the speeds of the `Cython` version: 18.2s, 17.3s, 16.8s
--   The `CFFI` speeds: 11.7s, 11.7s, 12.0s
--   `CFFI` after re-compiling `pcre` with `--enable-jit` and then using JIT gives: 7.2s, 7.4s, 6.9s
+def main():
+    with contextlib.closing(bz2.BZ2File(log_filepath)) as f_in:
+        cpu_usages = map(process_line, f_in)
+    summarise(cpu_usages)
+```
 
 ---
 
 ## `CFFI`: replacing `process_line()`
 
--   CFFI is $\frac{7.2-22.7}{22.7} \approx 68\%$ faster than the Python version.
--   CFFI with non-JIT `pcre` is $\frac{11.7-17.3}{17.3} \approx 32\%$ faster than the Cython version.
--   CFFI with JIT `pcre` is $\frac{7.2-17.3}{17.3} \approx 58\%$ faster than the Cython version.
+-   Recall the speeds of the Python code with `map`: 22.7s, 22.3s, 23.2s
+-   Recall the speeds of the `Cython` version: 18.2s, 17.3s, 16.8s
+-   The `CFFI` speeds: 11.7s, 11.7s, 12.0s
+-   `CFFI` after re-compiling `pcre` with `--enable-jit` and then using JIT gives: 7.2s, 7.4s, 6.9s
+-   `CFFI` with `pcre` JIT'ing and `gcc` profiling (`-fprofile-generate`, run, `-fprofile-use`): 6.9s, 6.9s, 6.9s
+
+---
+
+## `CFFI`: replacing `process_line()`
+
+-   CFFI is $\frac{11.7-22.7}{22.7} \approx 48\%$ faster than the Python version.
+-   CFFI with JIT `pcre` is $\frac{7.2-22.7}{22.7} \approx 68\%$ faster than the Python version.
+-   CFFI with JIT `pcre` and `gcc` profiling is $\frac{6.9-22.7}{22.7} \approx 70\%$ faster than the Python version.
+-   For larger, more complex (i.e. real) examples:
+    -   `pcre` JIT'ing is even better; complex regular expressions give better yields.
+    -   `gcc` profiling is even better; branch probability hints work better if there are shed-loads of branches, loop unrolling hints with lots of loops, etc.!
 
 --- &twocol_uncentered
 
