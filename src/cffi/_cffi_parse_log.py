@@ -1,3 +1,14 @@
+# -----------------------------------------------------------------------------
+# !!AI TODO
+# - I'm being very naughty; there's a whole bunch of C free'ing that
+#   I'm ignoring. But this is out of the scope of the presentation.
+#   For reference refer to the "JIT reference" for an example.
+#
+#   pcre_free(re);
+#   pcre_free_study(extra);
+#   pcre_jit_stack_free(jit_stack);
+# -----------------------------------------------------------------------------
+
 # -------------------------------------------------------------------
 #   Hack distutils to stop being a muppet and throwing
 #   -Qunused-arguments around. Needed to get gcc-4.7 working.
@@ -11,6 +22,7 @@ for key in distutils.sysconfig._config_vars:
 # -------------------------------------------------------------------
 
 # PCRE reference: http://www.mitchr.me/SS/exampleCode/AUPG/pcre_example.c.html
+# PCRE JIT reference: http://www.manpagez.com/man/3/pcrejit/
 
 from cffi import FFI
 
@@ -35,12 +47,13 @@ def _make_ffi_process_line():
     static char* regex = "(.*?),(.*?),(.*)";
     static pcre* re;
     static pcre_extra* extra;
+    static pcre_jit_stack *jit_stack;
 
     pcre* compile_regexp(char* regexp) {
         const char* error;
         int erroffset;
         re = pcre_compile(regex,
-                          PCRE_UTF8,
+                          0, // PCRE_UTF8,
                           &error,
                           &erroffset,
                           0);
@@ -56,6 +69,8 @@ def _make_ffi_process_line():
         if (error != NULL) {
             printf("pcre_study failed: '%s'\n", error);
         }
+        jit_stack = pcre_jit_stack_alloc(32*1024, 512*1024);
+        pcre_assign_jit_stack(extra, NULL, jit_stack);
         return extra;
     }
 
@@ -71,7 +86,7 @@ def _make_ffi_process_line():
             extra = study_regexp(re);
         }
         int offsets[MAX_OFFSETS];
-        rc = pcre_exec(re, extra, line, strlen(line), 0, 0, offsets, MAX_OFFSETS);
+        rc = pcre_jit_exec(re, extra, line, strlen(line), 0, 0, offsets, MAX_OFFSETS, jit_stack);
         if (rc < 0) {
             if (rc == PCRE_ERROR_NOMATCH) printf("Did not match\n");
             else printf("Matching error %d\n", rc);
