@@ -23,6 +23,7 @@ for key in distutils.sysconfig._config_vars:
 
 # PCRE reference: http://www.mitchr.me/SS/exampleCode/AUPG/pcre_example.c.html
 # PCRE JIT reference: http://www.manpagez.com/man/3/pcrejit/
+# PCRE man page: http://vcs.pcre.org/viewvc/code/trunk/doc/pcre.txt?view=markup
 
 from cffi import FFI
 
@@ -76,26 +77,51 @@ def _make_ffi_process_line():
 
     int process_line(const char* line) {
         int rc, i;
-        const int MAX_OFFSETS = 30;
-        const char* value;
+
+        /* see man page section 'How pcre_exec() returns captured */
+        /* substrings'                                            */
+        const int MAX_CAPTURE_GROUPS = 10;
+        const int MAX_OFFSETS = MAX_CAPTURE_GROUPS * 3;
+        int offsets[MAX_OFFSETS];
         const char* metric;
-        static char* cpu_usage = "cpu_usage";
         int metric_len;
+        const int METRIC_MATCH_GROUP_NUMBER = 1;
+        const int METRIC_OFFSET_START = (METRIC_MATCH_GROUP_NUMBER + 1) * 2;
+        const int METRIC_OFFSET_END = (METRIC_MATCH_GROUP_NUMBER + 1) * 2 + 1;
+        static char* cpu_usage = "cpu_usage";
+        const char* value;
+        const int VALUE_MATCH_GROUP_NUMBER = 2;
+
         if (!re) {
             re = compile_regexp(regex);
             extra = study_regexp(re);
         }
-        int offsets[MAX_OFFSETS];
-        rc = pcre_jit_exec(re, extra, line, strlen(line), 0, 0, offsets, MAX_OFFSETS, jit_stack);
+        rc = pcre_jit_exec(re,           /* result of pcre_compile() */
+                           extra,        /* result of pcre_study() */
+                           line,         /* the subject string */
+                           strlen(line), /* length of subject string */
+                           0,            /* start at offset 0 in the subject */
+                           0,            /* default options */
+                           offsets,      /* vector of integers for substring info */
+                           MAX_OFFSETS,  /* number of elements */
+                           jit_stack);   /* result of pcre_jit_stack_alloc() */
         if (rc < 0) {
             if (rc == PCRE_ERROR_NOMATCH) printf("Did not match\n");
             else printf("Matching error %d\n", rc);
             return -1;
         }
-        pcre_get_substring(line, offsets, rc, 2, &(metric));
-        metric_len = offsets[2*2+1] - offsets[2*2];
+        pcre_get_substring(line,
+                           offsets,
+                           rc,
+                           METRIC_MATCH_GROUP_NUMBER + 1,
+                           &(metric));
+        metric_len = offsets[METRIC_OFFSET_END] - offsets[METRIC_OFFSET_START];
         if (!strncmp(metric, cpu_usage, metric_len)) {
-            pcre_get_substring(line, offsets, rc, 3, &(value));
+            pcre_get_substring(line,
+                               offsets,
+                               rc,
+                               VALUE_MATCH_GROUP_NUMBER + 1,
+                               &(value));
             return atoi(value);
         }
         return -1;
