@@ -3,7 +3,7 @@ Pympler==0.3.1
 Twisted==12.3.0
 cffi==0.5
 ipdb==0.7
-ipython==0.13.1
+ipython==7.16.3
 line-profiler==1.0b3
 memory-profiler==0.23
 numpy==1.7.0
